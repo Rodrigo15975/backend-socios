@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { SharedPostgresqlModule } from './shared/postgresql/Sharedpostgresql.module';
 
 @Module({
-  imports: [],
+  imports: [SharedPostgresqlModule, SharedPostgresqlModule],
   controllers: [],
   providers: [],
 })
