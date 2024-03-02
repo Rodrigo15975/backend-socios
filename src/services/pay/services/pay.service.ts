@@ -16,7 +16,7 @@ export class PayService {
   private readonly client: Stripe;
 
   constructor(private readonly config: ConfigService) {
-    this.client = new Stripe(this.config.get('SECRET_KEY'), {
+    this.client = new Stripe(this.config.get('STRIPE_SECRET_KEY'), {
       typescript: true,
     });
   }
@@ -40,7 +40,7 @@ export class PayService {
       event = this.client.webhooks.constructEvent(
         req.rawBody,
         sig,
-        this.config.get('WEBHOOK_SECRET'),
+        this.config.get('STRIPE_WEBHOOK_SECRET'),
       );
     } catch (err) {
       console.log(`❌ Error message: ${err.message}`);
