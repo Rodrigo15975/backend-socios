@@ -8,13 +8,14 @@ async function bootstrap() {
     rawBody: true,
   });
   const port = process.env.PORT || 4000;
-  app.use(cookie());
   // configurar enableCors
   app.enableCors({
-    origin: '*',
+    origin: 'http://localhost:5173',
+    credentials: true,
     methods: ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'],
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookie());
   await app.listen(port);
 }
 bootstrap();

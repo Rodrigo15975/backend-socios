@@ -1,20 +1,24 @@
 import { HttpCode, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { HandleErrors } from 'src/common/handleErrors/handle-errorst';
 import { CreateCargoDto, PropsCreateCargoDto } from '../dto/create-cargo.dto';
 import { UpdateCargoDto } from '../dto/update-cargo.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Cargo } from '../entities/cargo.entity';
-import { Model } from 'mongoose';
-import { HandleErrors } from 'src/common';
+import { Usuario } from '../../usuarios/entities/usuario.entity';
+import { env } from 'process';
 
 @Injectable()
 export class CargoService {
+  private readonly idDefault = env.idDefaultCargo;
   constructor(
+    @InjectModel(Usuario.name) private readonly modelUsuarios: Model<Usuario>,
     private readonly handleErros: HandleErrors,
     @InjectModel(Cargo.name) private readonly modelCargo: Model<Cargo>,
   ) {}
   async create(createCargoDto: CreateCargoDto) {
     const { cargos } = createCargoDto;
-    if (!cargos.length)
+    if (cargos.length === 0)
       this.handleErros.handleErrorsBadRequestException('Datos no encontrados');
     return await this.createCargo(cargos);
   }
@@ -24,9 +28,8 @@ export class CargoService {
   }
 
   // Cambiar si necesita este findOne, el id por el cargo para encontrar
-  async findOne(id: string) {
-    await this.existeCargo(id);
-    return await this.modelCargo.findById(id).select(['_id', 'cargo']);
+  async findOneCargo(cargo: string) {
+    return await this.modelCargo.findOne({ cargo });
   }
 
   async update(id: string, updateCargoDto: UpdateCargoDto) {
@@ -40,7 +43,15 @@ export class CargoService {
 
   @HttpCode(204)
   async remove(id: string) {
+    const docDefault = await this.modelCargo.findById(this.idDefault);
+
     await this.existeCargo(id);
+
+    // Buscar siempre con el typesObjectId si no no valdar
+    await this.modelUsuarios.updateMany(
+      { id_cargo: new Types.ObjectId(id) },
+      { $set: { id_cargo: docDefault._id } },
+    );
     await this.modelCargo.findByIdAndDelete(id);
     return this.handleErros.handleSendMessage('Removido correctamente');
   }

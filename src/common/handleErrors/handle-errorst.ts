@@ -2,14 +2,14 @@ import {
   BadRequestException,
   ConflictException,
   HttpException,
-  HttpStatus,
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { HttpStatusCode } from 'axios';
 
 export class HandleErrors {
-  handleSendMessage(msg: string, HttpStatus?: HttpStatus) {
+  handleSendMessage(msg: string, HttpStatus?: HttpStatusCode) {
     throw new HttpException(msg, HttpStatus);
   }
   handleErrorsGeneralUsersNotFounds(msg: string) {

@@ -2,14 +2,15 @@ import { Req } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { env } from 'process';
+import { User } from '../types/type-auth';
+import { constantsKey } from 'src/common/constants/constantsKey';
 
-export class AuthJwt extends PassportStrategy(Strategy, env.PASSPORT_AUTH) {
+export class AuthJwt extends PassportStrategy(Strategy, 'auth-jwt') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([AuthJwt.stractJwtRequest]),
-      secretOrKey: env.SECRET_KEY_AUTH,
-      expiration: true,
+      secretOrKey: constantsKey.secret,
+      ignoreExpiration: false,
     });
   }
 
@@ -19,7 +20,7 @@ export class AuthJwt extends PassportStrategy(Strategy, env.PASSPORT_AUTH) {
   }
 
   // Crear un tipado para el user
-  async validate(user: any) {
+  async validate(user: User) {
     return user;
   }
 }

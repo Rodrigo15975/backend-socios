@@ -12,7 +12,6 @@ export class Usuario {
     required: true,
     unique: true,
     trim: true,
-    uppercase: true,
   })
   dni: string;
 
@@ -31,7 +30,6 @@ export class Usuario {
   apellidos: string;
 
   @Prop({
-    required: true,
     trim: true,
     uppercase: true,
   })
@@ -41,6 +39,7 @@ export class Usuario {
     ref: TipoUsuario.name,
     type: Types.ObjectId,
     trim: true,
+    required: true,
   })
   id_tipo: TipoUsuario;
 
@@ -48,20 +47,18 @@ export class Usuario {
     ref: Cargo.name,
     type: Types.ObjectId,
     trim: true,
+    required: true,
   })
   id_cargo: Cargo;
 
   @Prop({
-    required: true,
     trim: true,
-    uppercase: true,
   })
   telefono: string;
 
   @Prop({
     required: true,
     trim: true,
-    uppercase: true,
   })
   contraseña: string;
 

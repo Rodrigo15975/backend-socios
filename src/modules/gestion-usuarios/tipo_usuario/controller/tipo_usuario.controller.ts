@@ -6,15 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TipoUsuarioService } from '../services/tipo_usuario.service';
 import { CreateTipoUsuarioDto } from '../dto/create-tipo_usuario.dto';
 import { UpdateTipoUsuarioDto } from '../dto/update-tipo_usuario.dto';
+import { AuthUserGuard } from 'src/modules/auth/guards/auth-guards';
 
+@UseGuards(AuthUserGuard)
 @Controller('tipo-usuario')
 export class TipoUsuarioController {
   constructor(private readonly tipoUsuarioService: TipoUsuarioService) {}
-  @Post('create')
+  @Post()
   create(@Body() createTipoUsuarioDto: CreateTipoUsuarioDto) {
     return this.tipoUsuarioService.create(createTipoUsuarioDto);
   }

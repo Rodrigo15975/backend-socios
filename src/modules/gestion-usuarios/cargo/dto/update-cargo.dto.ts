@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCargoDto } from './create-cargo.dto';
+import { PropsCreateCargoDto } from './create-cargo.dto';
 
-export class UpdateCargoDto extends PartialType(CreateCargoDto) {}
+export class UpdateCargoDto extends PartialType(PropsCreateCargoDto) {}

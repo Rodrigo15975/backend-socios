@@ -1,16 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { CargoService } from '../services/cargo.service';
+import { AuthUserGuard } from 'src/modules/auth/guards/auth-guards';
 import { CreateCargoDto } from '../dto/create-cargo.dto';
 import { UpdateCargoDto } from '../dto/update-cargo.dto';
+import { CargoService } from '../services/cargo.service';
 
+@UseGuards(AuthUserGuard)
 @Controller('cargo')
 export class CargoController {
   constructor(private readonly cargoService: CargoService) {}
@@ -23,11 +26,6 @@ export class CargoController {
   @Get()
   findAll() {
     return this.cargoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cargoService.findOne(id);
   }
 
   @Patch(':id')
