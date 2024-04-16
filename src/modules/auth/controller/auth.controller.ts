@@ -1,31 +1,17 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
-import { UsuariosService } from 'src/modules/gestion-usuarios/usuarios/services/usuarios.service';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthUserGuard } from '../guards/auth-guards';
 import { AuthService } from '../services/auth.service';
 import { AuthData } from '../types/type-auth';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usuarioServices: UsuariosService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() data: AuthData, @Res() res: Response) {
+  async login(@Body() data: AuthData) {
     const auth = await this.authService.signIn(data);
-    // return { auth };
-    res.cookie('auth', auth);
-    res.send({});
+    return { auth };
   }
 
   @UseGuards(AuthUserGuard)
