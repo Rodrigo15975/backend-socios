@@ -10,8 +10,7 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
   // configurar enableCors
   app.enableCors({
-    origin:
-      'https://661dcafd480c9b65703f4576--delicate-bombolone-e4e512.netlify.app',
+    origin: 'https://delicate-bombolone-e4e512.netlify.app',
     credentials: true,
     methods: ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'],
   });
